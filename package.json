@@ -1,0 +1,29 @@
+{
+  "name": "forms",
+  "version": "1.0.0",
+  "description": "Form tool like Google Forms",
+  "main": "runserver.cmd",
+  "dependencies": {
+    "less" : "2.7.2",
+    "yamljs" : "0.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isaacvr/forms.js.git"
+  },
+  "keywords": [
+    "forms",
+    "javascript",
+    "yaml"
+  ],
+  "author": "Isaac Vega Rodriguez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/isaacvr/forms.js/issues"
+  },
+  "homepage": "https://github.com/isaacvr/forms.js#readme"
+}

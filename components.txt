@@ -1,0 +1,52 @@
+**COMMON**
+  == title: String
+  == subtitle: String
+  == name: String
+  == validations: [ Validation ]
+  == onError: String
+
+Validation:
+  == type: String
+  == list: [ String | Object ]
+
+input
+  == placeholder: String
+
+radio
+  == items: [String]
+
+checkbox
+  == items: [String]
+
+radioMatrix
+  == cols: [ { name: String, title: String } ]
+  == rows: [ { name: String, title: String } ]
+
+checkboxMatrix
+  == cols: [ { name: String, title: String } ]
+  == rows: [ { name: String, title: String } ]
+
+
+
+---------------------------------------------------------------
+  == Validations:
+    == number:
+      == >
+      == >=
+      == <
+      == <=
+      == ==
+      == !=
+      == a:b               (a <= x <= b)
+      == !a:b             !(a <= x <= b)
+      == integer
+    == text:
+      == contains
+      == notcontains
+      == email
+      == url
+    == length
+      == max
+      == min
+    == regexp
+      == value

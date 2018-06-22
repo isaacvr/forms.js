@@ -1,0 +1,217 @@
+@formWidth: 80%;
+@item-margin-top: 40px;
+@item-font-size: 1.1em;
+@matrix-padding-top: 10px;
+@component-padding: 20px;
+@component-padding-x2: @component-padding * 2;
+
+@keyframes flip {
+  0% {
+    transform: scale(0, 1);
+    background-color: #ccc;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.form-pagelist {
+
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
+  width: @formWidth;
+  margin: 0;
+  margin-left: (100% - @formWidth) / 2;
+  padding: 20px;
+  border-radius: 2px;
+
+  ul {
+    margin: 0;
+    padding: 0;
+    margin-top: 20px;
+  }
+
+  li {
+    list-style: none;
+    margin: 10px 0px;
+  }
+
+  input[type="radio"],
+  input[type="checkbox"] {
+    cursor: pointer;
+  }
+
+  .form-next-page,
+  .form-prev-page,
+  .form-submit {
+    font-size: 1.2em;
+    border: 1px solid lightgray;
+    padding: 10px;
+    border-radius: 2px;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: all 150ms;
+    margin-right: 20px;
+  }
+
+  .form-next-page:hover,
+  .form-prev-page:hover,
+  .form-submit:hover {
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  }
+
+  .form-page {
+
+    color: inherit;
+
+    .form-page-header {
+
+      font-size: 2.5em;
+      margin: 20px 0;
+      padding-left: @component-padding;
+      padding-right: @component-padding;
+
+    }
+
+    .form-page-subtitle {
+      padding-left: @component-padding;
+      padding-right: @component-padding;
+    }
+
+    .form-title {
+      margin: 0;
+      width: calc(100% - @component-padding-x2);
+    }
+
+    .form-subtitle {
+      margin: 0;
+      width: 100%;
+    }
+
+    .form-line-group {
+
+      width: -moz-max-content;
+      width: -webkit-max-content;
+      width: -ms-max-content;
+      width: -o-max-content;
+      width: max-content;
+
+      .form-line-bottom {
+        width: 100%;
+        height: 2px;
+      }
+
+    }
+
+    .form-input-descriptor {
+      margin-left: 5px;
+      cursor: pointer;
+    }
+
+    .form-error {
+      display: none;
+      font-weight: bold;
+      color: red;
+      top: 5px;
+    }
+
+    .form-input {
+
+      margin-top: @item-margin-top;
+      font-size: @item-font-size;
+      padding: @component-padding;
+
+      input {
+        padding: 8px;
+        border: 0px;
+        margin: 0;
+      }
+
+      input:not(:focus) + .form-line-bottom {
+        background: #ccc;
+      }
+
+      input:focus + .form-line-bottom {
+        animation: flip 600ms;
+        background: #0078ff;
+      }
+
+      input:focus + .form-line-bottom::before {
+        width: 100%;
+      }
+
+      input::before {
+        color: blue;
+      }
+
+    }
+
+    .form-radio, .form-checkbox {
+
+      margin-top: @item-margin-top;
+      font-size: @item-font-size;
+      padding: @component-padding;
+
+    }
+
+    .form-radioMatrix, .form-checkboxMatrix {
+
+      margin-top: @item-margin-top;
+      font-size: @item-font-size;
+      padding: @component-padding;
+
+      table {
+        padding-top: @matrix-padding-top;
+        width: 100%;
+        border-collapse: collapse;
+
+        tr:nth-child(2n) {
+          background: rgba(238, 238, 238, 0.4);
+        }
+
+        tr:nth-child(2n+3) {
+          background: rgba(238, 238, 238, 1);
+        }
+
+        td, th {
+          height: 3em;
+
+          input {
+            color: inherit;
+          }
+        }
+
+        td, th:not(:first-child) {
+          text-align: center;
+          max-width: 60px;
+          word-wrap: break-word;
+        }
+
+        th:first-child {
+          padding-left: 10px;
+        }
+
+      }
+
+    }
+
+    .form-incomplete {
+      background-color: #ffebee;
+      border-radius: 2px;
+      box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-incomplete .form-error {
+      display: initial;
+    }
+
+  }
+
+  .form-btn-container {
+    padding: @component-padding;
+  }
+
+  .form-hidden {
+    display: none;
+  }
+
+}
