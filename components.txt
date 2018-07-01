@@ -21,12 +21,15 @@ checkbox
 radioMatrix
   == cols: [ { name: String, title: String } ]
   == rows: [ { name: String, title: String } ]
+  == answerBy: String in { "rows", "cols" } (default = "rows")
 
 checkboxMatrix
   == cols: [ { name: String, title: String } ]
   == rows: [ { name: String, title: String } ]
+  == answerBy: String in { "rows", "cols" } (default = "rows")
 
-
+plainText
+  == content: String
 
 ---------------------------------------------------------------
   == Validations:

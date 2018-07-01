@@ -2,15 +2,11 @@
  *  @author: Isaac Vega Rodriguez          <isaacvega1996@gmail.com>
  */
 
-if ( typeof YAML === 'undefined' ) {
-  throw new ReferenceError("This library requires YAML");
-}
-
 /**
 
   @params:
     @a: div element to set up things
-    @b: source directory of the yaml file
+    @b: source directory of the json file
 
  */
 function Form(a, b) {
@@ -52,6 +48,7 @@ function Form(a, b) {
     'checkbox',
     'radioMatrix',
     'checkboxMatrix',
+    'plainText',
   ];
 
   _this._defaultErrorMessage = "This field is required. Please, fill it.";
@@ -398,6 +395,8 @@ Form._components = {
 
     headers.appendChild( doc.createElement('th') );
 
+    // console.log('radioMatrixHandler: ', data);
+
     for (var i = 0; i < data.cols.length; i += 1) {
 
       var th = doc.createElement('th');
@@ -467,8 +466,23 @@ Form._components = {
 
     return container;
 
-  }
+  },
+  plainText : function plainTextHandler(data, form) {
 
+    var doc = document;
+    var container = this.__basic_component(data, form);
+
+    var div = doc.createElement('div');
+
+    div.className = 'form-plain-text-body';
+
+    div.innerHTML = data.content;
+
+    container.appendChild(div);
+
+    return container;
+
+  }
 };
 
 Form.VALIDATIONS = {
@@ -868,15 +882,35 @@ Form.prototype.setSource = function setSource(src) {
 
   var _this = this;
 
-  YAML.load(src, function(data) {
+  var _sender = new XMLHttpRequest();
 
-    _this._obj = data;
+  _sender.open("GET", src, true);
 
-    _this.triggerEvent('load', data);
+  _sender.addEventListener('load', function(e) {
 
-    _this.compile();
+    if ( e.target.readyState === 4 ) {
+      if ( e.target.status < 400 ) {
 
-  });//*/
+        var data = JSON.parse( e.target.responseText);
+
+        //console.log( data );
+
+        _this._obj = data;
+
+        _this.triggerEvent('load', data);
+
+        _this.compile();
+
+        return;
+
+      }
+    }
+
+    throw new Error("Error while loading the data");
+
+  }, false);
+
+  _sender.send(null);
 
 
 };
@@ -1001,7 +1035,7 @@ Form.prototype.pageComplete = function pageComplete() {
         var elem = doc.querySelector('[form-name="' + name + '"]');
 
         var val = elem.getAttribute('form-validations');
-        var isOptional = Boolean( elem.getAttribute('form-optional') );
+        var isOptional = !!elem.getAttribute('form-optional');
 
         if ( val != null ) {
 
@@ -1023,9 +1057,13 @@ Form.prototype.pageComplete = function pageComplete() {
 
           }
 
+        } else if ( name === '_' || isOptional === true ) {
+          ret1 = true;
         }
 
       }
+
+      // console.log('NAME, RET1, LV: ', name, ret1, lv);
 
       if ( ret1 === false && lv === 0 ) {
 

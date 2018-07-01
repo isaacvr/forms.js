@@ -84,7 +84,7 @@
 
     .form-subtitle {
       margin: 0;
-      width: 100%;
+      width: 93%;
     }
 
     .form-line-group {
@@ -163,13 +163,14 @@
         padding-top: @matrix-padding-top;
         width: 100%;
         border-collapse: collapse;
+        border: 1px solid rgba(0, 0, 0, 0.05);
 
         tr:nth-child(2n) {
           background: rgba(238, 238, 238, 0.4);
         }
 
         tr:nth-child(2n+3) {
-          background: rgba(238, 238, 238, 1);
+          background: #dad8d8;
         }
 
         td, th {
@@ -190,6 +191,24 @@
           padding-left: 10px;
         }
 
+      }
+
+    }
+
+    .form-plainText {
+
+      margin-top: @item-margin-top;
+      font-size: @item-font-size;
+      padding: @component-padding;
+      word-wrap: break-word;
+
+      .form-plain-text-body {
+        margin-top: 20px;
+      }
+
+      img {
+        max-width: 100%;
+        margin: 20px 0px;
       }
 
     }

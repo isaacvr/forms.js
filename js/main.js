@@ -4,7 +4,7 @@ function main() {
 
   var form = document.querySelector("#myForm");
 
-  var fm = Form(form, 'yaml/form1.yaml');
+  var fm = Form(form, 'json/form1.json');
 
   fm.addValidation('myEmail', function(elem) {
 

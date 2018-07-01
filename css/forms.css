@@ -64,7 +64,7 @@
 }
 .form-pagelist .form-page .form-subtitle {
   margin: 0;
-  width: 100%;
+  width: 93%;
 }
 .form-pagelist .form-page .form-line-group {
   width: -moz-max-content;
@@ -127,6 +127,7 @@
   padding-top: 10px;
   width: 100%;
   border-collapse: collapse;
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 .form-pagelist .form-page .form-radioMatrix table tr:nth-child(2n),
 .form-pagelist .form-page .form-checkboxMatrix table tr:nth-child(2n) {
@@ -134,7 +135,7 @@
 }
 .form-pagelist .form-page .form-radioMatrix table tr:nth-child(2n+3),
 .form-pagelist .form-page .form-checkboxMatrix table tr:nth-child(2n+3) {
-  background: #eeeeee;
+  background: #dad8d8;
 }
 .form-pagelist .form-page .form-radioMatrix table td,
 .form-pagelist .form-page .form-checkboxMatrix table td,
@@ -159,6 +160,19 @@
 .form-pagelist .form-page .form-radioMatrix table th:first-child,
 .form-pagelist .form-page .form-checkboxMatrix table th:first-child {
   padding-left: 10px;
+}
+.form-pagelist .form-page .form-plainText {
+  margin-top: 40px;
+  font-size: 1.1em;
+  padding: 20px;
+  word-wrap: break-word;
+}
+.form-pagelist .form-page .form-plainText .form-plain-text-body {
+  margin-top: 20px;
+}
+.form-pagelist .form-page .form-plainText img {
+  max-width: 100%;
+  margin: 20px 0px;
 }
 .form-pagelist .form-page .form-incomplete {
   background-color: #ffebee;
