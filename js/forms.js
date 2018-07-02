@@ -90,9 +90,32 @@ Form._components = {
 
     var createItem = function createItem(item, id) {
 
+      var needExtraInput = false;
+
+      if ( type === 'radio' ) {
+        if ( /^%/.test(item) === true ) {
+          if ( /^%%/.test(item) === false ) {
+            needExtraInput = true;
+          }
+          item = item.substr(1, item.length);
+        }
+      }
+
       var li         = doc.createElement('li');
       var inp        = doc.createElement('input');
       var descriptor = doc.createElement('span');
+
+      ///---------------------------------------------
+
+      var _extraInp = doc.createElement('input');
+
+      _extraInp.setAttribute('type', 'text');
+      //_extraInp.setAttribute('size', '30');
+      _extraInp.setAttribute('name', data.name);
+      _extraInp.setAttribute('placeholder', '');
+      _extraInp.setAttribute('form-type', 'form-extra-input');
+
+      ///---------------------------------------------
 
       inp.setAttribute("type", type);
       inp.setAttribute("name", data.name || '');
@@ -108,6 +131,9 @@ Form._components = {
             form.formObj[ data.name ].push( item );
           } else {
             form.formObj[ data.name ].splice( form.formObj[ data.name ].indexOf( item ), 1 );
+            if ( form.formObj[ data.name ].length === 0 ) {
+              delete form.formObj[ data.name ];
+            }
           }
         }
 
@@ -134,6 +160,35 @@ Form._components = {
       li.appendChild(inp);
       li.appendChild(descriptor);
 
+      if ( needExtraInput === true ) {
+
+        var flg       = doc.createElement('div');
+        var flb       = doc.createElement('div');
+
+        flg.className       = "form-line-group";
+        flb.className       = "form-line-bottom";
+
+        _extraInp.addEventListener('input', function() {
+
+          inp.checked = true;
+
+          var realValue = _extraInp.value;;
+
+          if ( realValue === '' ) {
+            form.formObj[ data.name ] = null;
+          } else {
+            form.formObj[ data.name ] = realValue;
+          }
+
+        }, false);
+
+        flg.appendChild(_extraInp);
+        flg.appendChild(flb);
+
+        li.appendChild(flg);
+
+      }
+
       container.appendChild(li);
 
     };
@@ -145,7 +200,15 @@ Form._components = {
   },
   __from_matrix : function(container, type, data, form, requirements) {
 
-    requirements = requirements || [];
+    if ( data.hasOwnProperty('answerBy') === true ) {
+
+      if ( ["rows", "cols"].indexOf(data.answerBy) === -1 ) {
+        data.answerBy = "rows";
+      }
+
+    } else {
+      data.answerBy = "rows";
+    }
 
     var doc = document;
 
@@ -160,7 +223,7 @@ Form._components = {
 
       var i;
 
-      if ( requirements.indexOf('col') > -1 ) {
+      if ( data.answerBy === "cols" ) {
 
         for ( i = 0; i < data.cols.length; i += 1 ) {
           form._pageRequirements[ form._pages - 1 ][ idx ].requirements.push( data.cols[i].name );
@@ -189,7 +252,7 @@ Form._components = {
 
       if ( type === "radio" ) {
 
-        if ( requirements.indexOf('col') > -1 ) {
+        if ( data.answerBy === "cols" ) {
           thisObj[ colName ] = rowName;
         } else {
           thisObj[ rowName ] = colName;
@@ -197,7 +260,7 @@ Form._components = {
 
       } else if ( type === "checkbox" ) {
 
-        if ( requirements.indexOf('col') > -1 ) {
+        if ( data.answerBy === "cols" ) {
           thisObj[ colName ] = thisObj[ colName ] || [];
           if ( elem.checked === true ) {
             thisObj[ colName ].push( rowName );
@@ -240,7 +303,12 @@ Form._components = {
         inp.setAttribute("type", type);
         inp.setAttribute("row", data.rows[i].name || '');
         inp.setAttribute("col", data.cols[j].name || '');
-        inp.setAttribute("name", data.rows[i].name || '');
+
+        if ( data.answerBy === 'rows' ) {
+          inp.setAttribute("name", data.rows[i].name || '');
+        } else {
+          inp.setAttribute("name", data.cols[j].name || '');
+        }
 
         inp.addEventListener('click', inputClickHandler, false);
 
@@ -274,6 +342,11 @@ Form._components = {
 
     container.appendChild(h3);
     container.appendChild(p);
+
+    if ( data.type === 'plainText' ) {
+      data.name = '_';
+      data.optional = true;
+    }
 
     container.setAttribute('form-name', data.name);
 

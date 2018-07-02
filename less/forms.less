@@ -87,6 +87,29 @@
       width: 93%;
     }
 
+    input {
+      padding: 8px;
+      border: 0px;
+      margin: 0;
+    }
+
+    input:not(:focus) + .form-line-bottom {
+      background: #ccc;
+    }
+
+    input:focus + .form-line-bottom {
+      animation: flip 600ms;
+      background: #0078ff;
+    }
+
+    input:focus + .form-line-bottom::before {
+      width: 100%;
+    }
+
+    input::before {
+      color: blue;
+    }
+
     .form-line-group {
 
       width: -moz-max-content;
@@ -94,6 +117,7 @@
       width: -ms-max-content;
       width: -o-max-content;
       width: max-content;
+      display: inline-table;
 
       .form-line-bottom {
         width: 100%;
@@ -120,29 +144,6 @@
       font-size: @item-font-size;
       padding: @component-padding;
 
-      input {
-        padding: 8px;
-        border: 0px;
-        margin: 0;
-      }
-
-      input:not(:focus) + .form-line-bottom {
-        background: #ccc;
-      }
-
-      input:focus + .form-line-bottom {
-        animation: flip 600ms;
-        background: #0078ff;
-      }
-
-      input:focus + .form-line-bottom::before {
-        width: 100%;
-      }
-
-      input::before {
-        color: blue;
-      }
-
     }
 
     .form-radio, .form-checkbox {
@@ -153,11 +154,18 @@
 
     }
 
+    .form-radio [form-type="form-extra-input"] {
+
+      margin-left: 5px;
+
+    }
+
     .form-radioMatrix, .form-checkboxMatrix {
 
       margin-top: @item-margin-top;
       font-size: @item-font-size;
       padding: @component-padding;
+      word-wrap: break-word;
 
       table {
         padding-top: @matrix-padding-top;
