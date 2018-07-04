@@ -333,7 +333,7 @@ Form._components = {
     var h3        = doc.createElement('h3');
     var p         = doc.createElement('p');
 
-    container.className = "form-" + data.type;
+    container.className = "form-" + data.type + ' form-container';
     h3.className        = "form-title";
     p.className         = "form-subtitle";
 
@@ -1089,6 +1089,10 @@ Form.prototype.pageComplete = function pageComplete() {
 
         name = arr[i];
 
+        if ( name === '' ) {
+          continue;
+        }
+
         if ( obj.hasOwnProperty(arr[i]) === false ) {
           ret1 = false;
         } else if ( Boolean(obj[ arr[i] ]) === false ) {
@@ -1099,6 +1103,10 @@ Form.prototype.pageComplete = function pageComplete() {
 
         name = arr[i].name;
 
+        if ( name === '' ) {
+          continue;
+        }
+
         ret1 = rec( arr[i].requirements, obj[ arr[i].name ], lv + 1 );
 
       }
@@ -1107,31 +1115,34 @@ Form.prototype.pageComplete = function pageComplete() {
 
         var elem = doc.querySelector('[form-name="' + name + '"]');
 
-        var val = elem.getAttribute('form-validations');
-        var isOptional = !!elem.getAttribute('form-optional');
+        if ( elem != null ) {
 
-        if ( val != null ) {
+          var val = elem.getAttribute('form-validations');
+          var isOptional = !!elem.getAttribute('form-optional');
 
-          val = JSON.parse(val);
+          if ( val != null ) {
 
-          //console.log(val);
+            val = JSON.parse(val);
 
-          if ( ret1 === false ) {
+            //console.log(val);
 
-            ret1 = isOptional;
+            if ( ret1 === false ) {
 
-          } else {
+              ret1 = isOptional;
 
-            for (var j = 0; j < val.length && ret1 === true; j += 1) {
-              if ( _this.validate( val[j], obj[ arr[i] ] ) === false ) {
-                ret1 = false;
+            } else {
+
+              for (var j = 0; j < val.length && ret1 === true; j += 1) {
+                if ( _this.validate( val[j], obj[ arr[i] ] ) === false ) {
+                  ret1 = false;
+                }
               }
+
             }
 
+          } else if ( name === '_' || isOptional === true ) {
+            ret1 = true;
           }
-
-        } else if ( name === '_' || isOptional === true ) {
-          ret1 = true;
         }
 
       }

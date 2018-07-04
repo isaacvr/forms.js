@@ -87,6 +87,12 @@
       width: 93%;
     }
 
+    .form-container:not([form-optional="true"]) .form-title::after {
+      content: '*';
+      margin: 0px 10px;
+      color: red;
+    }
+
     input {
       padding: 8px;
       border: 0px;
