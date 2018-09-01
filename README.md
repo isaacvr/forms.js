@@ -35,6 +35,47 @@ You can create an instance of a single form like this:
 
 This code is almost all that you need to run your form.
 
+## JSON model
+
+The JSON file contains all the fields of the form, including the validation rules, name of the fields and all of the data that you need to show. This is an example of a valid JSON file.
+
+```json
+
+{
+  "items": [
+    {
+      "type": "page",
+      "title": "This is an example",
+      "subtitle": "This is the subtitle for clarifications etc...",
+      "items": [
+        {
+          "type": "input",
+          "name": "username",
+          "title": "Your name please",
+          "subtitle": "Let us know your name!",
+          "onError": "Please, type your name",
+          "placeholder": "Type your name here..."
+        },
+        {
+          "type": "radio",
+          "name": "userGender",
+          "title": "Your gender",
+          "subtitle": "",
+          "items": [
+            "Male",
+            "Female",
+            "%Other"
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+```
+
+As you can see, this is a very descriptive way to store the information. To see all the components to use and all it's features, please go to the `Components` section.
+
 ## Events
 
 * `load`: Is triggered when the content is loaded from the file provided, or in general, from the URL provided. The value passed through the callback is the data as a JSON.
@@ -129,3 +170,124 @@ You can set up your own validation tests in order to extend the functionality an
   });
 
 ```
+
+## Components
+
+There are a few components that you can use for your forms. Here is a list:
+
+  * input
+  * radio
+  * checkbox
+  * radioMatrix
+  * checkboxMatrix
+  * plainText
+
+There are common properties that can be used in each one of them.
+
+  * title: `String`
+  * subtitle: `String`
+  * name: `String`
+  * validations: [ `Validation` ]
+  * onError: `String`
+
+### title [String]
+
+The content of the `title` field is the header of the block that contains the current component.
+
+### subtitle [String]
+
+The subtitle goes below of the title but with a tiny font size.
+
+### name [String]
+
+The `name` field is one of the most important fields in the component because is the identifier of the component in the JSON when all the data is collected from the user.
+
+### validations [Validation list]
+
+All kind of validations must be here, even the custom ones. Here you can set up all that you want in order to get a valid data from the user.
+
+### onError [String]
+
+When the validation process is running and the field is not valid or if is missing for some reason, the error message will be the value of this field.
+
+### input [Component]
+
+This component is a single html `input`. You can also set the `placeholder` field for this element.
+
+### radio [Component]
+
+This is a single option selection component. All the element names must be placed at the `items` field. If you want to accept another answer, you must start the item name with a `%` character.
+
+e.g.
+```json
+{
+  "type": "radio",
+  "name": "currentCity",
+  "title": "Tell us your current city",
+  "subtitle": "",
+  "items": [
+    "New York",
+    "L.A",
+    "New Jersey",
+    "%Other"
+  ]
+}
+```
+
+### checkbox [Component]
+
+This component allows multiple answers. All the element names must be placed at the `items` field.
+
+### radioMatrix [Component]
+
+With this component you can set a matrix where you can group all the answers. The title for all of the columns must be at the `cols` field and the title for all of the rows must be at the `rows` field. You can also set if the answer is by row or by column with the `answerBy` field set to `rows` or `cols`. The default value of the `answerBy` field is `rows`.
+
+e.g.
+
+```json
+{
+  "type": "radioMatrix",
+  "title": "We want to know if you can speak multiple languages",
+  "subtitle": "Show us what you're capable of",
+  "rows": [
+    {
+      "name": "english",
+      "title": "English"
+    },
+    {
+      "name": "spanish",
+      "title": "Español"
+    },
+    {
+      "name": "japanese",
+      "title": "Japanese"
+    }
+  ],
+  "cols": [
+    {
+      "name": "none",
+      "title": "I don't understand"
+    },
+    {
+      "name": "little",
+      "title": "Just a little"
+    },
+    {
+      "name": "medium",
+      "title": "Medium level"
+    },
+    {
+      "name": "expert",
+      "title": "Fluid communication"
+    }
+  ]
+}
+```
+
+### checkboxMatrix [Component]
+
+This component is similar to the `radioMatrix` but users can select multiple answers.
+
+### plainText [Component]
+
+For this component, the `name`, `validations`, and `onError` fields are not considered when the validation process is running. This field can be used for large clarifications. All the data must be placed at the `content` field.
