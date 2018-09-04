@@ -48,12 +48,12 @@ function Form(a, b) {
         'checkbox',
         'radioMatrix',
         'checkboxMatrix',
-        'plainText',
+        'plainText'
     ];
 
     _this._defaultErrorMessage = "This field is required. Please, fill it.";
 
-    for (var i = 0; i < _this._events.length; i += 1) {
+    for (var i = 0, maxi = _this._events.length; i < maxi; i += 1) {
         _this._callbacs[_this._events[i]] = [];
         _this._answeredCallbacs[_this._events[i]] = false;
     }
@@ -204,7 +204,7 @@ Form._components = {
 
         };
 
-        for (var i = 0; i < data.items.length; i += 1) {
+        for (var i = 0, maxi = data.items.length; i < maxi; i += 1) {
             createItem(data.items[i], i);
         }
 
@@ -232,23 +232,25 @@ Form._components = {
                 requirements: []
             };
 
-            var i;
+            var i, maxi;
+
+            var req = form._pageRequirements[form._pages - 1][idx].requirements;
 
             if (data.answerBy === "cols") {
 
-                for (i = 0; i < data.cols.length; i += 1) {
-                    form._pageRequirements[form._pages - 1][idx].requirements.push(data.cols[i].name);
+                for (i = 0, maxi = data.cols.length; i < maxi; i += 1) {
+                    req.push(data.cols[i].name);
                 }
 
             } else {
 
-                for (i = 0; i < data.rows.length; i += 1) {
-                    form._pageRequirements[form._pages - 1][idx].requirements.push(data.rows[i].name);
+                for (i = 0, maxi = data.rows.length; i < maxi; i += 1) {
+                    req.push(data.rows[i].name);
                 }
 
             }
 
-        })();
+        }());
 
         form.formObj[data.name] = {};
 
@@ -297,7 +299,7 @@ Form._components = {
 
         };
 
-        for (var i = 0; i < data.rows.length; i += 1) {
+        for (var i = 0, maxi = data.rows.length; i < maxi; i += 1) {
 
             var tr = doc.createElement('tr');
             var th = doc.createElement('th');
@@ -306,7 +308,7 @@ Form._components = {
 
             tr.appendChild(th);
 
-            for (var j = 0; j < data.cols.length; j += 1) {
+            for (var j = 0, maxj = data.cols.length; j < maxj; j += 1) {
 
                 var td = doc.createElement('td');
                 var inp = doc.createElement('input');
@@ -392,10 +394,12 @@ Form._components = {
 
             var realValue = inp.value.trim();
 
+            var _form = form.formObj;
+
             if (realValue === '') {
-                form.formObj[data.name] = null;
+                _form[data.name] = null;
             } else {
-                form.formObj[data.name] = realValue;
+                _form[data.name] = realValue;
             }
 
         }, false);
@@ -481,7 +485,7 @@ Form._components = {
 
         // console.log('radioMatrixHandler: ', data);
 
-        for (var i = 0; i < data.cols.length; i += 1) {
+        for (var i = 0, maxi = data.cols.length; i < maxi; i += 1) {
 
             var th = doc.createElement('th');
 
@@ -521,7 +525,7 @@ Form._components = {
 
         headers.appendChild(doc.createElement('th'));
 
-        for (var i = 0; i < data.cols.length; i += 1) {
+        for (var i = 0, maxi = data.cols.length; i < maxi; i += 1) {
 
             var th = doc.createElement('th');
 
@@ -613,7 +617,7 @@ Form.VALIDATIONS = {
 
             }
 
-            for (var i = 0; i < list.length; i += 1) {
+            for (var i = 0, maxi = list.length; i < maxi; i += 1) {
 
                 list[i] = list[i].trim();
 
@@ -640,9 +644,7 @@ Form.VALIDATIONS = {
                         //console.log('OK: %s is > %s', _n, a);
 
                     }
-                }
-
-                if (/^</.test(list[i]) === true) {
+                } else if (/^</.test(list[i]) === true) {
                     if (/^<=/.test(list[i]) === true) {
                         a = parseFloat(list[i].substr(2, list[i].length));
 
@@ -665,9 +667,7 @@ Form.VALIDATIONS = {
                         //console.log('OK: %s is < %s', _n, a);
 
                     }
-                }
-
-                if (/^==/.test(list[i]) === true) {
+                } else if (/^==/.test(list[i]) === true) {
 
                     a = parseFloat(list[i].substr(2, list[i].length));
 
@@ -678,9 +678,7 @@ Form.VALIDATIONS = {
 
                     //console.log('OK: %s is equal to', _n, a);
 
-                }
-
-                if (/^!=/.test(list[i]) === true) {
+                } else if (/^!=/.test(list[i]) === true) {
 
                     a = parseFloat(list[i].substr(2, list[i].length));
 
@@ -758,7 +756,7 @@ Form.VALIDATIONS = {
 
         var urlRegexp = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \?=.-]*)*\/?$/;
 
-        for (var i = 0; i < list.length; i += 1) {
+        for (var i = 0, maxi = list.length; i < maxi; i += 1) {
 
             list[i] = list[i].trim();
 
@@ -768,10 +766,7 @@ Form.VALIDATIONS = {
                 aux.shift();
                 aux = aux.join(':');
 
-                if (aux === '') {
-                    /// ignore!
-                } else {
-
+                if (aux !== '') {
                     if (/^not/.test(list[i]) === true) {
                         return t.indexOf(aux) === -1;
                     } else {
@@ -781,20 +776,12 @@ Form.VALIDATIONS = {
 
             }
 
-            if (list[i] === 'email') {
-
-                if (emailRegexp.test(t) === false) {
-                    return false;
-                }
-
+            if (list[i] === 'email' && emailRegexp.test(t) === false) {
+                return false;
             }
 
-            if (list[i] === 'url') {
-
-                if (urlRegexp.test(t) === false) {
-                    return false;
-                }
-
+            if (list[i] === 'url' && urlRegexp.test(t) === false) {
+                return false;
             }
 
         }
@@ -808,15 +795,13 @@ Form.VALIDATIONS = {
 
         var reg;
 
-        for (var i = 0; i < list.length; i += 1) {
+        for (var i = 0, maxi = list.length; i < maxi; i += 1) {
 
             reg = RegExp(list[i]);
 
             if (reg.test(t) === false) {
                 //console.log('FAIL:', t, 'does not match with', reg);
                 return false;
-            } else {
-                //console.log('OK:', t, 'match with', reg);
             }
 
         }
@@ -833,11 +818,9 @@ Form.VALIDATIONS = {
         if (list.hasOwnProperty('min') === true) {
             list.min = ~~list.min;
 
-            if (list.min >= 0) {
-                if (t.length < list.min) {
-                    //console.log('FAIL:', t.length, 'is <', list.min);
-                    return false;
-                }
+            if (list.min >= 0 && t.length < list.min) {
+                //console.log('FAIL:', t.length, 'is <', list.min);
+                return false;
             }
 
         }
@@ -845,11 +828,9 @@ Form.VALIDATIONS = {
         if (list.hasOwnProperty('max') === true) {
             list.max = ~~list.max;
 
-            if (list.max >= 0) {
-                if (t.length > list.max) {
-                    //console.log('FAIL:', t.length, 'is >', list.max);
-                    return false;
-                }
+            if (list.max >= 0 && t.length > list.max) {
+                //console.log('FAIL:', t.length, 'is >', list.max);
+                return false;
             }
 
         }
@@ -863,9 +844,9 @@ Form.formatString = function formatString(str) {
 
     if (typeof str === 'string') {
         return str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    } else {
-        return '';
     }
+
+    return '';
 
 };
 
@@ -878,9 +859,9 @@ Form.prototype.validate = function validate(validation, val) {
     if (Form.VALIDATIONS.hasOwnProperty(validation.type) === true) {
         //console.log('VALIDATING...');
         return Form.VALIDATIONS[validation.type].call(this, val, validation.list || []);
-    } else {
-        return true;
     }
+
+    return true;
 
 };
 
@@ -929,7 +910,7 @@ Form.prototype.triggerEvent = function triggerEvent(ev) {
     var _this = this;
     var params = Array.from(arguments).slice(1, arguments.length);
 
-    var i;
+    var i, maxi;
 
     if (_this._events.indexOf(ev) > -1) {
 
@@ -938,7 +919,7 @@ Form.prototype.triggerEvent = function triggerEvent(ev) {
             _this._triggeredEvents.push(ev);
             _this._lastArgumentOf[ev] = params;
 
-            for (i = 0; i < _this._callbacs[ev].length; i += 1) {
+            for (i = 0, maxi = _this._callbacs[ev].length; i < maxi; i += 1) {
                 _this._callbacs[ev][i].apply(_this, params);
             }
 
@@ -952,7 +933,7 @@ Form.prototype.triggerEvent = function triggerEvent(ev) {
                 _this._lastArgumentOf[ev] = params;
             }
 
-            for (i = 0; i < _this._callbacs[ev].length; i += 1) {
+            for (i = 0, maxi = _this._callbacs[ev].length; i < maxi; i += 1) {
                 _this._callbacs[ev][i].apply(_this, params);
             }
 
@@ -1071,7 +1052,7 @@ Form.prototype.goToPage = function goToPage(id) {
                     prevBtn.classList.add('form-hidden');
                 }
 
-                for (var i = 0; i < pages.length; i += 1) {
+                for (var i = 0, maxi = pages.length; i < maxi; i += 1) {
                     if (i != id) {
                         pages[i].classList.add('form-hidden');
                     } else {
@@ -1105,7 +1086,7 @@ Form.prototype.pageComplete = function pageComplete() {
             ret1;
         var name;
 
-        for (var i = 0; i < arr.length; i += 1) {
+        for (var i = 0, maxi = arr.length; i < maxi; i += 1) {
 
             ret1 = true;
 
@@ -1156,7 +1137,7 @@ Form.prototype.pageComplete = function pageComplete() {
 
                         } else {
 
-                            for (var j = 0; j < val.length && ret1 === true; j += 1) {
+                            for (var j = 0, maxj = val.length; j < maxj && ret1 === true; j += 1) {
                                 if (_this.validate(val[j], obj[arr[i]]) === false) {
                                     ret1 = false;
                                 }
@@ -1225,7 +1206,7 @@ Form.prototype.compile = function compile() {
 
             var context = elem;
 
-            for (var i = 0; i < keys.length; i += 1) {
+            for (var i = 0, maxi = keys.length; i < maxi; i += 1) {
 
                 if (keys[i] === 'type') {
                     if (obj.type === 'page') {
@@ -1261,7 +1242,7 @@ Form.prototype.compile = function compile() {
                     }
                 } else if (keys[i] === "items") {
 
-                    for (var j = 0; j < obj.items.length; j += 1) {
+                    for (var j = 0, maxj = obj.items.length; j < maxj; j += 1) {
 
                         rec(context, obj.items[j]);
 
